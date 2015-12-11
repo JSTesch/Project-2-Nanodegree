@@ -1,0 +1,23 @@
+# script to import csv, sort, test data for nanodegree class.
+# many imports, expecting to add some visuals in later versions
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+train_df = pd.read_csv('C:/Users/justin/Desktop/titanic_data.csv')
+
+#sort by survival
+deceased = train_df[train_df['Survived'] < 1]
+survived = train_df[train_df['Survived'] > 0]
+
+#drop NaN and look at single column
+deceased_no_nan = deceased[['Age']].dropna()
+survived_no_nan = survived[['Age']].dropna()
+
+# Distribution unclear, Mann-Whitney-Wilcoxon test to look for differences
+z_stat, p_val = stats.ranksums(deceased_no_nan, survived_no_nan)
+
+# statistical significance at alpha < .05
+print "MWW RankSum P for Deceased and survivors =", p_val
